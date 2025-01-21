@@ -1,0 +1,233 @@
+/* RESET & BASE STYLES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  }
+  
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* ----- CONTAINER (SWIPE ORIZZONTALE) ----- */
+  /*
+    Altezza = 100vh meno l'altezza del footer (60px).
+    Lo swipe orizzontale si applica su schermi <769px (vedi media query).
+  */
+  .container {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: calc(100vh - 60px);
+  
+    /* Scorrimento orizzontale + snapping su mobile */
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  
+    /* Sfondo gradiente (vecchio stile) */
+    background: linear-gradient(#45818e, #d0e0e3);
+  }
+  
+  /* Ogni pagina (panel) su mobile prende 100% di larghezza */
+  .panel {
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ----- HEADER (Glass Effect) ----- */
+  .panel-header {
+    padding: 15px;
+    background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    color: #ffffff;
+  }
+  
+  .search {
+    display: block;
+    /* Usa lo stesso margine orizzontale (35px) di .intestazione e .table-container */
+    margin: 0 35px 8px;
+    
+    /* width auto (o 100%) in base a come vuoi che si adatti */
+    width: calc(100% - 70px);
+    
+    padding: 10px;
+    border: 1px solid #45818e;
+    background: #d0e0e3;
+    color: #434343;
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .search:focus {
+    outline: none;
+    background: #ffffff;
+    box-shadow: 0 0 10px #45818e, inset 0 1px 5px rgba(0,0,0,0.2);
+  }
+  
+/* Intestazione: togli width: calc(100% - 40px); e metti margin uguale al .table-container.
+   Forziamo le 4 colonne in 16.66% / 50% / 16.66% / 16.66%. */
+   .intestazione {
+    display: grid;
+    /* Invece di grid-template-columns: 1fr 3fr 1fr 1fr, usiamo le percentuali: */
+    grid-template-columns: 16.6667% 50% 16.6667% 16.6667%;
+    margin: 0 35px;          /* stesso margin orizzontale della tabella */
+    padding: 5px;
+  
+    /* Il resto rimane come prima: background, blur, border, ecc. */
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
+    backdrop-filter: blur(8px);
+    border: 1px solid #45818e;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
+    color: #434343;
+    text-align: center;
+  }
+  
+    /* ----- CONTENITORE SCROLLABILE PER LA TABELLA ----- */
+    /* Table Container: se hai margin: 0 35px qui, lascialo uguale. */
+    .table-container {
+    flex: 1;
+    overflow-y: auto;
+    margin: 0 35px; /* deve coincidere con .intestazione */
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+    border: none;
+  }
+  
+    /* Stile tabella */
+    /* Tabella: table-layout fixed e widths su nth-child per rispettare 1:3:1:1. */
+    table {
+    table-layout: fixed;    /* Fondamentale! */
+    width: 100%;
+    border-collapse: collapse;
+    color: #434343;
+  }
+  
+/* 1° colonna ~16.66%, 2° colonna 50%, 3° e 4° colonna ~16.66% */
+.table-container table td:nth-child(1) {
+    width: 16.6667%;
+  }
+  .table-container table td:nth-child(2) {
+    width: 50%;
+  }
+  .table-container table td:nth-child(3),
+  .table-container table td:nth-child(4) {
+    width: 16.6667%;
+  }
+  
+  /* Celle */
+  td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #45818e;
+    background: #d0e0e3;
+  }
+  
+  /* Righe alternate */
+  tbody tr:nth-child(odd) {
+    background: #ffffff;
+  }
+  tbody tr:nth-child(even) {
+    background: #d0e0e3;
+  }
+  
+  /* Hover row */
+  tr:hover {
+    background: #45818e;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+  
+  /* ----- FOOTER FISSO GLOBALE (unico per tutte le pagine) ----- */
+  .global-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* corrisponde all'altezza sottratta nella .container */
+    background: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  
+  .bottom-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Link del footer */
+  .bottom-nav a {
+    text-decoration: none;
+    color: #fff;
+    padding: 8px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  /* Icone PNG con pseudo-elemento (32px).
+     Assicurati di avere i file .png nella stessa cartella, 
+     oppure regola url("...") se sono altrove.
+  */
+  .icona-feed a::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+    background: url("Footer_Home.png") no-repeat center center / contain;
+  }
+  .icona-impostazioni a::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+    background: url("Footer_Impostazioni.png") no-repeat center center / contain;
+  }
+  .icona-newarticle a::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+    background: url("Footer_NewArticle.png") no-repeat center center / contain;
+  }
+  .icona-profile a::before {
+    content: "";
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin-right: 6px;
+    background: url("Footer_Profile.png") no-repeat center center / contain;
+  }
+  
+  /* ----- DESKTOP (affianca i panel) ----- */
+  @media (min-width: 769px) {
+    .container {
+      overflow-x: hidden;    /* niente scroll orizzontale su desktop */
+      scroll-snap-type: none;
+      height: calc(100vh - 60px);
+    }
+    .panel {
+      flex: 1;
+      width: auto;
+    }
+  }
+  
+  
